@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyru.ai</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/lucide.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: black;
+            color: white;
+            min-height: 100vh;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 50;
+        }
+
+        .header-content {
+            max-width: 72rem;
+            margin: 0 auto;
+            padding: 0 1rem;
+            height: 4rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 300;
+            text-decoration: none;
+            color: white;
+        }
+
+        .logo span {
+            color: #3b82f6;
+        }
+
+        .nav-desktop {
+            display: none;
+        }
+
+        .nav-desktop a {
+            color: #d1d5db;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 300;
+            transition: color 0.3s;
+            margin-left: 2rem;
+        }
+
+        .nav-desktop a:hover {
+            color: white;
+        }
+
+        .menu-button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .nav-mobile {
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(8px);
+            padding: 0.5rem 1rem;
+            display: none;
+        }
+
+        .nav-mobile.active {
+            display: block;
+        }
+
+        .nav-mobile a {
+            display: block;
+            padding: 0.75rem 0;
+            color: #d1d5db;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 300;
+            transition: color 0.3s;
+        }
+
+        .nav-mobile a:hover {
+            color: white;
+        }
+
+        .hero {
+            padding-top: 8rem;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+
+        .hero.visible {
+            opacity: 1;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 200;
+            line-height: 1.2;
+            letter-spacing: -0.025em;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(to right, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            font-weight: 300;
+            color: #9ca3af;
+            max-width: 32rem;
+            margin: 0 auto 3rem;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .button {
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 300;
+            transition: all 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .button-primary {
+            background-color: white;
+            color: black;
+        }
+
+        .button-primary:hover {
+            background-color: #f3f4f6;
+        }
+
+        .button-secondary {
+            background-color: transparent;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .button-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .features {
+            max-width: 72rem;
+            margin: 8rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .feature {
+            opacity: 0;
+            transform: translateY(2.5rem);
+            transition: all 0.5s;
+        }
+
+        .feature.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feature-icon {
+            color: #60a5fa;
+            margin-bottom: 1rem;
+            transition: transform 0.3s;
+        }
+
+        .feature:hover .feature-icon {
+            transform: scale(1.1);
+        }
+
+        .feature h3 {
+            font-size: 1.125rem;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature p {
+            color: #9ca3af;
+            font-weight: 300;
+            font-size: 0.875rem;
+        }
+
+        .cta {
+            max-width: 72rem;
+            margin: 8rem auto;
+            padding: 0 1rem;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+
+        .cta.visible {
+            opacity: 1;
+        }
+
+        .cta h2 {
+            font-size: 2rem;
+            font-weight: 200;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta p {
+            color: #9ca3af;
+            font-weight: 300;
+            max-width: 32rem;
+            margin: 0 auto 2rem;
+        }
+
+        .cta .button {
+            background-color: #3b82f6;
+            color: white;
+            display: inline-block;
+        }
+
+        .cta .button:hover {
+            background-color: #2563eb;
+        }
+
+        @media (min-width: 768px) {
+            .nav-desktop {
+                display: block;
+            }
+
+            .menu-button {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 4.5rem;
+            }
+
+            .hero p {
+                font-size: 1.5rem;
+            }
+
+            .features {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .features {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="#" class="logo">cyru<span>.ai</span></a>
+            <nav class="nav-desktop">
+                <a href="#">Products</a>
+                <a href="#">Solutions</a>
+                <a href="#">Pricing</a>
+                <a href="#">About</a>
+            </nav>
+            <button class="menu-button" aria-label="Menu">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+        </div>
+        <nav class="nav-mobile">
+            <a href="#">Products</a>
+            <a href="#">Solutions</a>
+            <a href="#">Pricing</a>
+            <a href="#">About</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>The future of AI<br><span>is here.</span></h1>
+        <p>Transform your business with intelligent solutions that adapt and evolve.</p>
+        <div class="button-container">
+            <a href="#" class="button button-primary">Get Started</a>
+            <a href="#" class="button button-secondary">Learn More</a>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="feature">
+            <div class="feature-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"></path><rect width="16" height="12" x="4" y="8" rx="2"></rect><path d="M2 14h2"></path><path d="M20 14h2"></path><path d="M15 13v2"></path><path d="M9 13v2"></path></svg>
+            </div>
+            <h3>Advanced AI</h3>
+            <p>Experience the next generation of artificial intelligence</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path><path d="M5 3v4"></path><path d="M19 17v4"></path><path d="M3 5h4"></path><path d="M17 19h4"></path></svg>
+            </div>
+            <h3>Intelligent Automation</h3>
+            <p>Seamlessly automate complex workflows</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path></svg>
+            </div>
+            <h3>Enterprise Security</h3>
+            <p>Bank-grade protection for your data</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+            </div>
+            <h3>Real-time Processing</h3>
+            <p>Lightning-fast results when you need them</p>
+        </div>
+    </section>
+
+    <section class="cta">
+        <h2>Ready to begin?</h2>
+        <p>Join the companies already transforming their future with Cyru.ai</p>
+        <a href="#" class="button">Contact Sales</a>
+    </section>
+
+    <script>
+        // Mobile menu functionality
+        const menuButton = document.querySelector('.menu-button');
+        const navMobile = document.querySelector('.nav-mobile');
+        const menuIcon = menuButton.querySelector('svg');
+        let menuOpen = false;
+
+        menuButton.addEventListener('click', () => {
+            menuOpen = !menuOpen;
+            navMobile.classList.toggle('active');
+            if (menuOpen) {
+                menuIcon.innerHTML = '<line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>';
+            } else {
+                menuIcon.innerHTML = '<line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>';
+            }
+        });
+
+        // Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        // Observe elements
+        document.querySelector('.hero').classList.add('visible');
+        document.querySelectorAll('.feature').forEach(feature => {
+            observer.observe(feature);
+        });
+        observer.observe(document.querySelector('.cta'));
+
+        // Add delay to features
+        document.querySelectorAll('.feature').forEach((feature, index) => {
+            feature.style.transitionDelay = `${index * 100}ms`;
+        });
+    </script>
+</body>
+</html>
